@@ -87,7 +87,7 @@ CREATE TABLE `pelicula` (
   `stock` bigint DEFAULT NULL,
   `titulo` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,9 +96,28 @@ CREATE TABLE `pelicula` (
 
 LOCK TABLES `pelicula` WRITE;
 /*!40000 ALTER TABLE `pelicula` DISABLE KEYS */;
-INSERT INTO `pelicula` VALUES (1,'Luca es un monstruo marino que vive debajo de un pueblo de la costa italiana. Cuando sale a la superficie, adquiere una apariencia humana, y conoce a un nuevo amigo, igual que Ã©l',1,NULL,2.25,5.50,10,'Luca'),(2,'Una peligrosa conspiraciÃ³n, relacionada con su pasado, persigue a Natasha Romanoff, tambiÃ©n conocida como Viuda Negra',0,NULL,2.75,6.00,5,'Black Widow'),(3,'Monsters, Incorporated es la fÃ¡brica de sustos mÃ¡s grande en el mundo de los monstruos y James P. Sullivan es uno de sus mejores asustadores',1,NULL,2.25,5.50,10,'Monsters In'),(4,'Una peligrosa conspiraciÃ³n, relacionada con su pasado, persigue a Natasha Romanoff, tambiÃ©n conocida como Viuda Negra',0,NULL,2.75,6.00,5,'Black Jack'),(5,'Un padre que padece una discapacidad mental debe luchar para ganar de nuevo la custodia de su querida hija.',1,NULL,2.25,5.50,10,'Yo soy Sam'),(6,'Los habitantes de un pequeÃ±o pueblo cercano al desierto pasan de la incredulidad al pÃ¡nico cuando se encuentran con una serie de muertes inexplicables.',0,NULL,2.75,6.00,5,'Temblores');
+INSERT INTO `pelicula` VALUES (1,'Luca es un monstruo marino que vive debajo de un pueblo de la costa italiana. Cuando sale a la superficie, adquiere una apariencia humana, y conoce a un nuevo amigo, igual que él',1,NULL,2.25,5.50,10,'Luca'),(2,'Una peligrosa conspiración, relacionada con su pasado, persigue a Natasha Romanoff, también conocida como Viuda Negra',0,NULL,2.75,6.00,5,'Black Widow'),(3,'Monsters, Incorporated es la fábrica de sustos más grande en el mundo de los monstruos y James P. Sullivan es uno de sus mejores asustadores',1,NULL,2.25,5.50,10,'Monsters In'),(4,'Una peligrosa conspiración, relacionada con su pasado, persigue a Natasha Romanoff, también conocida como Viuda Negra',0,NULL,2.75,6.00,5,'Black Jack'),(5,'Un padre que padece una discapacidad mental debe luchar para ganar de nuevo la custodia de su querida hija.',1,NULL,2.25,5.50,10,'Yo soy Sam'),(6,'Los habitantes de un pequeño pueblo cercano al desierto pasan de la incredulidad al pánico cuando se encuentran con una serie de muertes inexplicables.',0,NULL,2.75,6.00,5,'Temblores'),(7,'Luca es un monstruo marino que vive debajo de un pueblo de la costa italiana. Cuando sale a la superficie, adquiere una apariencia humana, y conoce a un nuevo amigo, igual que él',1,NULL,2.25,5.50,10,'Luca'),(8,'Una peligrosa conspiración, relacionada con su pasado, persigue a Natasha Romanoff, también conocida como Viuda Negra',0,NULL,2.75,6.00,5,'Black Widow'),(9,'Monsters, Incorporated es la fábrica de sustos más grande en el mundo de los monstruos y James P. Sullivan es uno de sus mejores asustadores',1,NULL,2.25,5.50,10,'Monsters In'),(10,'Una peligrosa conspiración, relacionada con su pasado, persigue a Natasha Romanoff, también conocida como Viuda Negra',0,NULL,2.75,6.00,5,'Black Jack'),(11,'Un padre que padece una discapacidad mental debe luchar para ganar de nuevo la custodia de su querida hija.',1,NULL,2.25,5.50,10,'Yo soy Sam'),(12,'Los habitantes de un pequeño pueblo cercano al desierto pasan de la incredulidad al pánico cuando se encuentran con una serie de muertes inexplicables.',0,NULL,2.75,6.00,5,'Temblores');
 /*!40000 ALTER TABLE `pelicula` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `historicoPeliculas` AFTER UPDATE ON `pelicula` FOR EACH ROW BEGIN
+	IF new.titulo <> old.titulo = 0 or new.precio_alq <> old.precio_alq or new.precio_ven <> old.precio_ven THEN
+		INSERT INTO historico_pelicula(titulo,precio_alq, precio_ven, pelicula_id) VALUES (NEW.titulo, new.precio_alq, new.precio_ven, old.id );
+	END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `pelicula_historial`
@@ -139,12 +158,12 @@ CREATE TABLE `registro` (
   `fecha` date DEFAULT NULL,
   `tipo` varchar(255) DEFAULT NULL,
   `total` decimal(19,2) DEFAULT NULL,
-  `pelicula` bigint DEFAULT NULL,
+  `pelicula_id` bigint DEFAULT NULL,
   `usuario_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `FKp60fllkyeky9pvf8xr1f5jhex` (`pelicula`),
+  KEY `FK8e3qtq1p7onrry0au3pkn0jqs` (`pelicula_id`),
   KEY `FKqfbdwuu2isbwwnx1uky39930w` (`usuario_id`),
-  CONSTRAINT `FKp60fllkyeky9pvf8xr1f5jhex` FOREIGN KEY (`pelicula`) REFERENCES `pelicula` (`id`),
+  CONSTRAINT `FK8e3qtq1p7onrry0au3pkn0jqs` FOREIGN KEY (`pelicula_id`) REFERENCES `pelicula` (`id`),
   CONSTRAINT `FKqfbdwuu2isbwwnx1uky39930w` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -278,4 +297,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-09-27  9:28:51
+-- Dump completed on 2021-09-27 14:03:02
